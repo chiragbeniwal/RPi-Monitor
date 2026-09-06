@@ -1,0 +1,19 @@
+Third-party artwork bundled with RPi-Monitor
+============================================
+
+version.png
+-----------
+The Linux mascot "Tux".
+
+  Authors : Larry Ewing, Simon Budig, Garrett LeSage
+  Source  : https://commons.wikimedia.org/wiki/File:Tux.svg
+  License : Attribution
+
+  Required attribution:
+    "Attribution to Larry Ewing (lewing@isc.tamu.edu) and The GIMP."
+
+  Derived from the 330x392 PNG rendering of Tux.svg, downscaled to 64x64
+  RGBA on a transparent canvas. No other modification was made.
+
+All other files in this directory are part of the RPi-Monitor project and
+are covered by the project's GPLv3 licence.

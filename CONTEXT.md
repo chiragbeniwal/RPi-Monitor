@@ -561,11 +561,17 @@ in the footer, `<font color=black>` in `ShowInfo()`, `#f0f0f0` in `rpimonitor.cs
 
 ### 8.8 Known remaining work
 
-- **`img/version.png` needs replacing.** It is **100% opaque** at 228/255 mean luminance — a
-  solid light tile, unlike the other icons which are transparent PNGs with dark line art
-  (handled by `--icon-filter`). No filter rescues it; inverting yields a solid dark tile with
-  inverted artwork. Currently knocked back with `--img-opacity` / `--img-blend` and a `TODO`.
-  The real fix is a transparent asset.
+- ~~`img/version.png` needs replacing.~~ **Done.** It was 100% opaque at 228/255 mean
+  luminance — a solid light tile that no filter could rescue. Replaced with Tux (the Linux
+  mascot), downscaled from the canonical `Tux.svg` rendering to 64×64 RGBA on a transparent
+  canvas: 48% opaque, 144/255 mean luminance, in line with the other widget icons
+  (cpu 155, sd 167, network 176). Attribution required by its licence is recorded in
+  `web/img/ATTRIBUTION.txt`.
+
+  Note Tux is **exempt from `--icon-filter`**. The other icons are monochrome line art and
+  invert cleanly; Tux is a colour logo, and inverting him produces a white-bodied penguin
+  with a black belly. The artwork carries its own contrast on either ground — white breast
+  and yellow beak against the dark surfaces, black body against the light one.
 - **`#qrcanv`** (`jsqrencode`) paints black-on-white into a canvas. Needs themed draw colors
   or a permanent light padding box.
 - **`#flotTip`** injects inline styles when `defaultTheme: true`; set it `false` to let a

@@ -159,8 +159,6 @@
   --state-danger-txt: #a94442;
   --state-danger-line: #ebccd1;
 
-  --img-opacity: 1;
-  --img-blend: normal;
   --preloader-opacity: 1;
 }
 
@@ -277,8 +275,6 @@
   --state-danger-txt: #a94442;
   --state-danger-line: #ebccd1;
 
-  --img-opacity: 1;
-  --img-blend: normal;
   --preloader-opacity: 1;
 }
 
@@ -520,8 +516,6 @@
   --state-warn-txt: var(--acc-warn);
   --state-danger-txt: var(--acc-danger);
 
-  --img-opacity: 0.55;
-  --img-blend: luminosity;
   --preloader-opacity: 0.45;
 }
 
@@ -1312,14 +1306,13 @@ progress {
   filter: var(--icon-filter);
 }
 
-/* TODO: needs a transparent replacement asset. img/version.png is 100% opaque
-   at ~228/255 mean luminance -- a solid light tile. No filter can rescue it
-   (inverting turns it into a solid dark tile with inverted artwork), so we
-   knock it back and let it blend with the surface instead. */
+/* Tux is a colour logo, not monochrome line art like the other widget icons,
+   so he is deliberately exempt from --icon-filter -- inverting him yields a
+   white-bodied penguin with a black belly. The artwork carries its own
+   contrast on either ground: the white breast and yellow beak read against
+   the dark surfaces, the black body against the light one. */
 img[src*="version.png"] {
   filter: none;
-  opacity: var(--img-opacity);
-  mix-blend-mode: var(--img-blend);
 }
 
 /* The rrd load spinner is a GIF baked on a light ground. */
