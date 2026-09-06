@@ -101,9 +101,9 @@ body {
 }
 @media screen and (min-width: 1025px) {
   .column-fluid {
-    -webkit-column-rule: 1px solid #f0f0f0;
-    -moz-column-rule: 1px solid #f0f0f0;
-    column-rule: 1px solid #f0f0f0;
+    -webkit-column-rule: 1px solid var(--line);
+    -moz-column-rule: 1px solid var(--line);
+    column-rule: 1px solid var(--line);
   }
 }
 @media screen and (min-width: 1025px) and (max-width: 1526px) {

@@ -22,7 +22,7 @@ var postProcessCommand=[];
 function ShowInfo(id,title,text){
   if ( text ) {
     postProcessInfo.push(["#"+id, title, text]);
-    return " <a href='#' id='"+id+"'><font color=black><span class='glyphicon glyphicon-search'></font></span>"
+    return " <a href='#' id='"+id+"' class='rpm-info'><span class='glyphicon glyphicon-search'></span></a>"
   }
   else {
     return "";
@@ -130,7 +130,13 @@ function JustGageBar(title, label, min, value, max, width, height, levelColors, 
     'title: "'+title+'",'+
     'startAnimationTime: 1,'+
     'startAnimationType: "linear",'+
-    'levelColors: ["'+ levelColors[0] +'","'+levelColors[1] +'","'+levelColors[2] +'"]'+
+    'levelColors: ["'+ levelColors[0] +'","'+levelColors[1] +'","'+levelColors[2] +'"],'+
+    // ThemeToken() is called when the command is evaluated (and not when this
+    // string is built) so that a theme change is picked up on the next render.
+    'gaugeColor: ThemeToken("--gauge-track"),'+
+    'valueFontColor: ThemeToken("--txt-1"),'+
+    'titleFontColor: ThemeToken("--txt-3"),'+
+    'labelFontColor: ThemeToken("--txt-2")'+
     '})')
   return div
 }

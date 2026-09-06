@@ -21,6 +21,149 @@ var refreshTimerId;
 var clickId;
 var current_path = window.location.pathname.split('/').pop();
 
+// ---------------------------------------------------------------------------
+// Theme management
+//
+// The preference stored in localStorage['rpm-theme'] can be any of the ids
+// listed in RPM_THEMES (including 'auto'). The value written into the
+// data-theme attribute of <html> is always a resolved theme ('auto' is never
+// written). A small inline script at the top of each page applies the stored
+// preference before the first paint to avoid a flash of the wrong theme.
+// ---------------------------------------------------------------------------
+var RPM_THEMES = [
+  { id: 'auto',     name: 'Match system' },
+  { id: 'light',    name: 'Light' },
+  { id: 'graphite', name: 'Graphite (dark)' },
+  { id: 'midnight', name: 'Midnight (dark)' },
+  { id: 'slate',    name: 'Slate Soft (dark)' },
+  { id: 'phosphor', name: 'Phosphor (terminal green)' }
+];
+
+// Light theme defaults used by ThemeToken() when the theme stylesheet could
+// not be loaded. Without them SVG based widgets (JustGage) would be drawn
+// with an empty colour and become invisible.
+var RPM_THEME_FALLBACK = {
+  '--bg-0'        : '#ffffff',
+  '--bg-1'        : '#f5f5f5',
+  '--bg-2'        : '#eeeeee',
+  '--line'        : '#dddddd',
+  '--txt-1'       : '#010101',
+  '--txt-2'       : '#b3b3b3',
+  '--txt-3'       : '#999999',
+  '--txt-4'       : '#c0c0c0',
+  '--acc-link'    : '#428bca',
+  '--acc-ok'      : '#5cb85c',
+  '--acc-warn'    : '#f0ad4e',
+  '--acc-danger'  : '#d9534f',
+  '--acc-info'    : '#5bc0de',
+  '--bar-fill'    : '#428bca',
+  '--bar-txt'     : '#ffffff',
+  '--gauge-track' : '#edebeb',
+  '--grid-line'   : '#cccccc',
+  '--grid-bg'     : '#ffffff'
+};
+
+function GetThemePreference(){
+  try {
+    return localStorage.getItem('rpm-theme') || 'auto';
+  }
+  catch (e) {
+    return 'auto';
+  }
+}
+
+function GetDarkMediaQuery(){
+  if ( window.matchMedia ) {
+    try {
+      return window.matchMedia('(prefers-color-scheme: dark)');
+    }
+    catch (e) {
+      return null;
+    }
+  }
+  return null;
+}
+
+function ResolveTheme(pref){
+  if ( pref != 'auto' ) {
+    return pref;
+  }
+  var mql = GetDarkMediaQuery();
+  if ( mql && mql.matches ) {
+    return 'graphite';
+  }
+  return 'light';
+}
+
+function ApplyTheme(pref){
+  pref = pref || 'auto';
+  var resolved = ResolveTheme(pref);
+  document.documentElement.setAttribute('data-theme', resolved);
+  try {
+    localStorage.setItem('rpm-theme', pref);
+  }
+  catch (e) {
+    // localStorage throws in private browsing mode on old Safari.
+  }
+  $(document).trigger('rpm:themechange', [resolved]);
+  return resolved;
+}
+
+function ThemeToken(name){
+  var value = '';
+  try {
+    value = window.getComputedStyle(document.documentElement).getPropertyValue(name);
+  }
+  catch (e) {
+    value = '';
+  }
+  value = value ? value.trim() : '';
+  if ( value == '' ) {
+    value = RPM_THEME_FALLBACK[name] || '';
+  }
+  return value;
+}
+
+function WatchSystemTheme(){
+  var mql = GetDarkMediaQuery();
+  if ( mql == null ) {
+    return;
+  }
+  var handler = function(){
+    if ( GetThemePreference() == 'auto' ) {
+      ApplyTheme('auto');
+    }
+  };
+  if ( mql.addEventListener ) {
+    mql.addEventListener('change', handler);
+  }
+  else if ( mql.addListener ) {
+    // Deprecated API, still the only one available on old WebKit.
+    mql.addListener(handler);
+  }
+}
+
+function AddThemeOption(){
+  var pref = GetThemePreference();
+  var options =
+        '<p>'+
+          '<b>Appearance</b><br>'+
+          '<form class="form-inline">'+
+            '<span>Theme <select class="span3" id="theme-select">';
+  for ( var iloop=0; iloop < RPM_THEMES.length; iloop++){
+    options +=
+            '<option value="'+RPM_THEMES[iloop].id+'" '+ ( pref == RPM_THEMES[iloop].id ? 'selected' : '' ) +'>'+RPM_THEMES[iloop].name+'</option>';
+  }
+  options +=
+            '</select></span>'+
+          '</form>'+
+        '</p>';
+  $(options).insertBefore("#optionsInsertionPoint");
+  $('#theme-select').on('change', function(){
+    ApplyTheme($('#theme-select').val());
+  });
+}
+
 function GetURLParameter(sParam)
 {
     var sPageURL = window.location.search.substring(1);
@@ -75,9 +218,9 @@ $('#footer').html(
   '<div class="navbar-inverse navbar-fixed-bottom text-center">'+
     '<small>'+
       '<a href="http://rpi-experiences.blogspot.fr/">RPi-Experiences</a>'+
-      '<font color="silver"> | </font>'+
+      '<span class="rpm-sep"> | </span>'+
       '<a href="https://github.com/XavierBerger/RPi-Monitor">GitHub</a>'+
-      '<font color="silver"> | </font>'+
+      '<span class="rpm-sep"> | </span>'+
       '<a href="http://www.raspberrypi.org/">Raspberry Pi Foundation</a>'+
     '</small>'+
   '</div>'
@@ -349,9 +492,17 @@ $(function () {
   }
 
   // Construct the page template
+  // The inline script of the page has normally already set data-theme before
+  // the first paint. Set it here too so the theme still applies if it did not.
+  if ( !document.documentElement.getAttribute('data-theme') ) {
+    document.documentElement.setAttribute('data-theme', ResolveTheme(GetThemePreference()));
+  }
+  WatchSystemTheme();
+
   getVersion();
   AddTopmenu();
   AddDialogs();
+  AddThemeOption();
   AddFooter();
   UpdateMenu();
 

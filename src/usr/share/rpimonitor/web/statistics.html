@@ -28,9 +28,19 @@
     <!-- CSS -->
     <link href="./css/bootstrap.min.css" rel="stylesheet">
     <link href="./css/rpimonitor.css" rel="stylesheet">
+    <link href="./css/rpimonitor.theme.css" rel="stylesheet">
 
     <!-- Favicon-->
     <link rel="shortcut icon" type="image/png" href="./img/favicon.png">
+
+    <!-- Resolve theme before first paint to avoid a flash of light background -->
+    <script>
+      (function(){try{
+        var t=localStorage.getItem('rpm-theme')||'auto';
+        if(t==='auto'){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'graphite':'light';}
+        document.documentElement.setAttribute('data-theme',t);
+      }catch(e){}})();
+    </script>
   </head>
 
   <body>
@@ -39,7 +49,7 @@
     <div id='topmenu'></div>
 
     <!-- Begin page content -->
-    <div class="alert alert-error hide" id="message"></div>
+    <div class="alert alert-danger hide" id="message"></div>
     <div class="text-info page-title hide" id="pageTitle"></div>
     <div class="container-fluid">
       <i id="insertionPoint"></i>

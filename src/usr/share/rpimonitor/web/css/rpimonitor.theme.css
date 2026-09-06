@@ -1,0 +1,1400 @@
+/*
+ * This file is part of RPi-Monitor project
+ *
+ * Copyright 2013-2026 - The RPi-Monitor project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/* ===========================================================================
+ * RPi-Monitor theme sheet
+ *
+ * Load AFTER css/bootstrap.min.css and css/rpimonitor.css.
+ *
+ * A theme is selected with a data-theme attribute on <html>, stamped by an
+ * inline script before first paint. This sheet only ever sees CONCRETE theme
+ * ids -- never "auto". Valid ids:
+ *
+ *     light  graphite  midnight  slate  phosphor
+ *
+ * "light" is the bare :root default and reproduces the stock Bootstrap 3.2.0
+ * appearance, so <html> and <html data-theme="light"> render identically and
+ * nothing changes for existing users.
+ *
+ * RULE: no colour literal appears outside a :root block. Component rules read
+ * tokens only.
+ * ======================================================================== */
+
+
+/* ---------------------------------------------------------------------------
+ * LIGHT palette -- the fallback, and the stock Bootstrap 3.2.0 appearance.
+ * ------------------------------------------------------------------------ */
+:root {
+  color-scheme: light;
+
+  /* --- public token contract (read by JS) --- */
+  --bg-0: #ffffff;
+  --bg-1: #ffffff;
+  --bg-2: #f5f5f5;
+  --line: #dddddd;
+
+  --txt-1: #333333;
+  --txt-2: #333333;
+  --txt-3: #777777;
+  --txt-4: #999999;
+
+  /* NOTE: the vendored Bootstrap is 3.2.0, whose brand primary is #428bca.
+     (#337ab7 only arrived in Bootstrap 3.3.x.) Using the real 3.2.0 value
+     here is what keeps light mode pixel-identical to today. */
+  --acc-link: #428bca;
+  --acc-ok: #5cb85c;
+  --acc-warn: #f0ad4e;
+  --acc-danger: #d9534f;
+  --acc-info: #5bc0de;
+
+  --nav-bg: #222222;
+  --nav-txt: #9d9d9d;
+  --nav-active-txt: #ffffff;
+  --nav-active-bg: #080808;
+
+  --bar-fill: #428bca;
+  --bar-txt: #ffffff;
+  --gauge-track: #edebeb;
+
+  --icon-filter: none;
+  --grid-line: #cccccc;
+  --grid-bg: transparent;
+  --grid-label: #545454;  /* Flot 0.7 grid.color default, keeps light exact */
+
+  --app-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* --- derived tokens (internal to this sheet) --- */
+  --acc-link-hover: #2a6496;
+
+  --nav-brand-txt: #777777;
+  --nav-hover-txt: #ffffff;
+  --nav-hover-bg: transparent;
+  --nav-line: #080808;
+  --nav-icon-bar: #ffffff;
+  --nav-header-txt: #777777;
+  --nav-divider: #444444;
+
+  --dropdown-bg: #ffffff;
+  --dropdown-line: #cccccc;
+  --dropdown-txt: #333333;
+  --dropdown-hover-bg: #f5f5f5;
+  --dropdown-hover-txt: #262626;
+
+  --input-bg: #ffffff;
+  --input-txt: #555555;
+  --input-line: #cccccc;
+  --input-placeholder: #999999;
+  --native-txt: #000000;
+  --ui-accent: auto;
+
+  --well-bg: #f5f5f5;
+  --well-line: #e3e3e3;
+  --panel-bg: #ffffff;
+  --panel-head-bg: #f5f5f5;
+  --panel-head-txt: #333333;
+
+  --modal-bg: #ffffff;
+  --modal-line: #e5e5e5;
+  --modal-edge: rgba(0, 0, 0, .2);
+  --backdrop-bg: #000000;
+  --close-txt: #000000;
+  --close-shadow: #ffffff;
+
+  --popover-bg: #ffffff;
+  --popover-line: rgba(0, 0, 0, .2);
+  --popover-arrow: rgba(0, 0, 0, .25);
+  --popover-title-bg: #f7f7f7;
+  --popover-title-line: #ebebeb;
+  --popover-txt: #333333;
+
+  --table-line: #dddddd;
+  --table-stripe-bg: #f9f9f9;
+  --table-hover-bg: #f5f5f5;
+
+  --badge-bg: #777777;
+  --badge-txt: #ffffff;
+  --label-txt: #ffffff;
+  --label-default-bg: #777777;
+
+  --btn-default-bg: #ffffff;
+  --btn-default-txt: #333333;
+  --btn-default-line: #cccccc;
+  --btn-default-hover-bg: #e6e6e6;
+  --btn-default-hover-line: #adadad;
+  --btn-primary-line: #357ebd;
+  --btn-primary-hover-bg: #3071a9;
+  --btn-primary-hover-line: #285e8e;
+  --btn-success-line: #4cae4c;
+  --btn-success-hover-bg: #449d44;
+  --btn-success-hover-line: #398439;
+  --btn-txt: #ffffff;
+
+  --state-ok-bg: #dff0d8;
+  --state-ok-txt: #3c763d;
+  --state-ok-line: #d6e9c6;
+  --state-info-bg: #d9edf7;
+  --state-info-txt: #31708f;
+  --state-info-line: #bce8f1;
+  --state-warn-bg: #fcf8e3;
+  --state-warn-txt: #8a6d3b;
+  --state-warn-line: #faebcc;
+  --state-danger-bg: #f2dede;
+  --state-danger-txt: #a94442;
+  --state-danger-line: #ebccd1;
+
+  --img-opacity: 1;
+  --img-blend: normal;
+  --preloader-opacity: 1;
+}
+
+/* Explicit light -- identical to the bare :root above. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-0: #ffffff;
+  --bg-1: #ffffff;
+  --bg-2: #f5f5f5;
+  --line: #dddddd;
+
+  --txt-1: #333333;
+  --txt-2: #333333;
+  --txt-3: #777777;
+  --txt-4: #999999;
+
+  --acc-link: #428bca;
+  --acc-ok: #5cb85c;
+  --acc-warn: #f0ad4e;
+  --acc-danger: #d9534f;
+  --acc-info: #5bc0de;
+
+  --nav-bg: #222222;
+  --nav-txt: #9d9d9d;
+  --nav-active-txt: #ffffff;
+  --nav-active-bg: #080808;
+
+  --bar-fill: #428bca;
+  --bar-txt: #ffffff;
+  --gauge-track: #edebeb;
+
+  --icon-filter: none;
+  --grid-line: #cccccc;
+  --grid-bg: transparent;
+
+  --app-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --acc-link-hover: #2a6496;
+
+  --nav-brand-txt: #777777;
+  --nav-hover-txt: #ffffff;
+  --nav-hover-bg: transparent;
+  --nav-line: #080808;
+  --nav-icon-bar: #ffffff;
+  --nav-header-txt: #777777;
+  --nav-divider: #444444;
+
+  --dropdown-bg: #ffffff;
+  --dropdown-line: #cccccc;
+  --dropdown-txt: #333333;
+  --dropdown-hover-bg: #f5f5f5;
+  --dropdown-hover-txt: #262626;
+
+  --input-bg: #ffffff;
+  --input-txt: #555555;
+  --input-line: #cccccc;
+  --input-placeholder: #999999;
+  --native-txt: #000000;
+  --ui-accent: auto;
+
+  --well-bg: #f5f5f5;
+  --well-line: #e3e3e3;
+  --panel-bg: #ffffff;
+  --panel-head-bg: #f5f5f5;
+  --panel-head-txt: #333333;
+
+  --modal-bg: #ffffff;
+  --modal-line: #e5e5e5;
+  --modal-edge: rgba(0, 0, 0, .2);
+  --backdrop-bg: #000000;
+  --close-txt: #000000;
+  --close-shadow: #ffffff;
+
+  --popover-bg: #ffffff;
+  --popover-line: rgba(0, 0, 0, .2);
+  --popover-arrow: rgba(0, 0, 0, .25);
+  --popover-title-bg: #f7f7f7;
+  --popover-title-line: #ebebeb;
+  --popover-txt: #333333;
+
+  --table-line: #dddddd;
+  --table-stripe-bg: #f9f9f9;
+  --table-hover-bg: #f5f5f5;
+
+  --badge-bg: #777777;
+  --badge-txt: #ffffff;
+  --label-txt: #ffffff;
+  --label-default-bg: #777777;
+
+  --btn-default-bg: #ffffff;
+  --btn-default-txt: #333333;
+  --btn-default-line: #cccccc;
+  --btn-default-hover-bg: #e6e6e6;
+  --btn-default-hover-line: #adadad;
+  --btn-primary-line: #357ebd;
+  --btn-primary-hover-bg: #3071a9;
+  --btn-primary-hover-line: #285e8e;
+  --btn-success-line: #4cae4c;
+  --btn-success-hover-bg: #449d44;
+  --btn-success-hover-line: #398439;
+  --btn-txt: #ffffff;
+
+  --state-ok-bg: #dff0d8;
+  --state-ok-txt: #3c763d;
+  --state-ok-line: #d6e9c6;
+  --state-info-bg: #d9edf7;
+  --state-info-txt: #31708f;
+  --state-info-line: #bce8f1;
+  --state-warn-bg: #fcf8e3;
+  --state-warn-txt: #8a6d3b;
+  --state-warn-line: #faebcc;
+  --state-danger-bg: #f2dede;
+  --state-danger-txt: #a94442;
+  --state-danger-line: #ebccd1;
+
+  --img-opacity: 1;
+  --img-blend: normal;
+  --preloader-opacity: 1;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * GRAPHITE -- cool neutral / blue.
+ * ------------------------------------------------------------------------ */
+:root[data-theme="graphite"] {
+  color-scheme: dark;
+
+  --bg-0: #0d1117;
+  --bg-1: #161b22;
+  --bg-2: #21262d;
+  --line: #30363d;
+
+  --txt-1: #e6edf3;
+  --txt-2: #adbac7;
+  --txt-3: #8b949e;
+  --txt-4: #6e7681;
+
+  --acc-link: #58a6ff;
+  --acc-ok: #3fb950;
+  --acc-warn: #d29922;
+  --acc-danger: #f85149;
+  --acc-info: #79c0ff;
+
+  --nav-bg: #161b22;
+  --nav-txt: #8b949e;
+  --nav-active-txt: #e6edf3;
+  --nav-active-bg: #0d1117;
+
+  --bar-fill: #388bfd;
+  --bar-txt: #0d1117;
+  --gauge-track: #21262d;
+
+  --icon-filter: invert(0.86) hue-rotate(180deg);
+  --grid-line: #30363d;
+  --grid-bg: #0d1117;
+}
+
+/* ---------------------------------------------------------------------------
+ * MIDNIGHT -- navy near-black / cyan, OLED friendly.
+ * ------------------------------------------------------------------------ */
+:root[data-theme="midnight"] {
+  color-scheme: dark;
+
+  --bg-0: #060910;
+  --bg-1: #0d1220;
+  --bg-2: #151c2e;
+  --line: #223049;
+
+  --txt-1: #f0f4fa;
+  --txt-2: #b4c0d4;
+  --txt-3: #8592aa;
+  --txt-4: #5f6c82;
+
+  --acc-link: #56cffa;
+  --acc-ok: #46d39a;
+  --acc-warn: #ffb454;
+  --acc-danger: #ff6b81;
+  --acc-info: #8ad9ff;
+
+  --nav-bg: #0d1220;
+  --nav-txt: #8592aa;
+  --nav-active-txt: #f0f4fa;
+  --nav-active-bg: #060910;
+
+  --bar-fill: #56cffa;
+  --bar-txt: #060910;
+  --gauge-track: #151c2e;
+
+  --icon-filter: invert(0.9) hue-rotate(180deg) saturate(0.7);
+  --grid-line: #223049;
+  --grid-bg: #060910;
+}
+
+/* ---------------------------------------------------------------------------
+ * SLATE -- lifted warm grey, the softest of the dark set.
+ * ------------------------------------------------------------------------ */
+:root[data-theme="slate"] {
+  color-scheme: dark;
+
+  --bg-0: #1b1f26;
+  --bg-1: #232830;
+  --bg-2: #2c323c;
+  --line: #3b424e;
+
+  --txt-1: #e3e7ec;
+  --txt-2: #b9c0ca;
+  --txt-3: #949ca8;
+  --txt-4: #737b88;
+
+  --acc-link: #7fb3e8;
+  --acc-ok: #6fc48f;
+  --acc-warn: #e0b25c;
+  --acc-danger: #e0787c;
+  --acc-info: #9ec9f0;
+
+  --nav-bg: #232830;
+  --nav-txt: #949ca8;
+  --nav-active-txt: #e3e7ec;
+  --nav-active-bg: #1b1f26;
+
+  --bar-fill: #7fb3e8;
+  --bar-txt: #1b1f26;
+  --gauge-track: #2c323c;
+
+  --icon-filter: invert(0.82) hue-rotate(180deg) saturate(0.6);
+  --grid-line: #3b424e;
+  --grid-bg: #1b1f26;
+}
+
+/* ---------------------------------------------------------------------------
+ * PHOSPHOR -- terminal green. The one theme that overrides the font.
+ * Local fonts only: this box may have no route to the internet.
+ * ------------------------------------------------------------------------ */
+:root[data-theme="phosphor"] {
+  color-scheme: dark;
+
+  --bg-0: #0a0f0a;
+  --bg-1: #0f1710;
+  --bg-2: #16231a;
+  --line: #1f3324;
+
+  --txt-1: #b9f7c0;
+  --txt-2: #7fd68f;
+  --txt-3: #57a869;
+  --txt-4: #3d7a4c;
+
+  --acc-link: #5cf08f;
+  --acc-ok: #3ddc72;
+  --acc-warn: #ffc857;
+  --acc-danger: #ff5f56;
+  --acc-info: #6ee7b7;
+
+  --nav-bg: #0f1710;
+  --nav-txt: #57a869;
+  --nav-active-txt: #b9f7c0;
+  --nav-active-bg: #0a0f0a;
+
+  --bar-fill: #3ddc72;
+  --bar-txt: #0a0f0a;
+  --gauge-track: #16231a;
+
+  --icon-filter: invert(0.85) sepia(1) hue-rotate(75deg) saturate(2.2) brightness(0.95);
+  --grid-line: #1f3324;
+  --grid-bg: #0a0f0a;
+
+  --app-font: "JetBrains Mono", Consolas, "DejaVu Sans Mono", Menlo, monospace;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * Derived tokens shared by every dark theme.
+ *
+ * The blocks above carry the palette; this block carries everything that can
+ * be expressed in terms of it, so a new dark theme only has to restate the
+ * palette. No property is set both here and above, so source order between
+ * this block and the theme blocks does not matter.
+ * ------------------------------------------------------------------------ */
+:root[data-theme="graphite"],
+:root[data-theme="midnight"],
+:root[data-theme="slate"],
+:root[data-theme="phosphor"] {
+  --acc-link-hover: var(--acc-info);
+
+  --nav-brand-txt: var(--txt-1);
+  --nav-hover-txt: var(--nav-active-txt);
+  --nav-hover-bg: var(--nav-active-bg);
+  --nav-line: var(--line);
+  --nav-icon-bar: var(--nav-txt);
+  --nav-header-txt: var(--txt-4);
+  --nav-divider: var(--line);
+
+  --dropdown-bg: var(--bg-1);
+  --dropdown-line: var(--line);
+  --dropdown-txt: var(--txt-2);
+  --dropdown-hover-bg: var(--bg-2);
+  --dropdown-hover-txt: var(--txt-1);
+
+  --input-bg: var(--bg-2);
+  --input-txt: var(--txt-1);
+  --input-line: var(--line);
+  --input-placeholder: var(--txt-4);
+  --native-txt: var(--txt-1);
+  --ui-accent: var(--acc-link);
+
+  --well-bg: var(--bg-1);
+  --well-line: var(--line);
+  --panel-bg: var(--bg-1);
+  --panel-head-bg: var(--bg-2);
+  --panel-head-txt: var(--txt-1);
+
+  --modal-bg: var(--bg-1);
+  --modal-line: var(--line);
+  --modal-edge: var(--line);
+  --backdrop-bg: var(--bg-0);
+  --close-txt: var(--txt-2);
+  --close-shadow: transparent;
+
+  --popover-bg: var(--bg-2);
+  --popover-line: var(--line);
+  --popover-arrow: var(--line);
+  --popover-title-bg: var(--bg-1);
+  --popover-title-line: var(--line);
+  --popover-txt: var(--txt-2);
+
+  --table-line: var(--line);
+  --table-stripe-bg: var(--bg-1);
+  --table-hover-bg: var(--bg-2);
+
+  --badge-bg: var(--txt-4);
+  --badge-txt: var(--bg-0);
+  --label-txt: var(--bg-0);
+  --label-default-bg: var(--txt-4);
+
+  --btn-default-bg: var(--bg-2);
+  --btn-default-txt: var(--txt-1);
+  --btn-default-line: var(--line);
+  --btn-default-hover-bg: var(--bg-1);
+  --btn-default-hover-line: var(--txt-4);
+  --btn-primary-line: var(--acc-link);
+  --btn-primary-hover-bg: var(--acc-info);
+  --btn-primary-hover-line: var(--acc-info);
+  --btn-success-line: var(--acc-ok);
+  --btn-success-hover-bg: var(--acc-ok);
+  --btn-success-hover-line: var(--acc-ok);
+  --btn-txt: var(--bg-0);
+
+  /* Alert / list-group state -txt colours are the accents themselves.
+     The matching -bg / -line tints are static per theme, just below: they were
+     authored with color-mix() but color-mix is Baseline 2023 while custom
+     properties date to 2016, and an unsupported color-mix makes every var()
+     that uses it invalid at computed-value time -- which would drop alert
+     backgrounds back to Bootstrap's light tints on a dark ground. Static hex
+     costs nothing here because the palettes never vary at runtime. */
+  --state-ok-txt: var(--acc-ok);
+  --state-info-txt: var(--acc-info);
+  --state-warn-txt: var(--acc-warn);
+  --state-danger-txt: var(--acc-danger);
+
+  --img-opacity: 0.55;
+  --img-blend: luminosity;
+  --preloader-opacity: 0.45;
+}
+
+/* Alert / list-group state tints: --acc-* mixed over --bg-1 at 16% (fill)
+   and 38% (border), precomputed so no color-mix() support is required.
+   --grid-label is Flot 0.7's axis tick label colour (set from JS). */
+:root[data-theme="graphite"] {
+  --state-ok-bg: #1d3429;
+  --state-ok-line: #265733;
+  --state-info-bg: #263545;
+  --state-info-line: #3c5a76;
+  --state-warn-bg: #342f22;
+  --state-warn-line: #5d4b22;
+  --state-danger-bg: #3a2428;
+  --state-danger-line: #6c3031;
+  --grid-label: #8b949e;
+}
+:root[data-theme="midnight"] {
+  --state-ok-bg: #163134;
+  --state-ok-line: #235b4e;
+  --state-info-bg: #213244;
+  --state-info-line: #3c5e75;
+  --state-warn-bg: #342c28;
+  --state-warn-line: #695034;
+  --state-danger-bg: #342030;
+  --state-danger-line: #693445;
+  --grid-label: #8592aa;
+}
+:root[data-theme="slate"] {
+  --state-ok-bg: #2f413f;
+  --state-ok-line: #406354;
+  --state-info-bg: #37424f;
+  --state-info-line: #526579;
+  --state-warn-bg: #413e37;
+  --state-warn-line: #6b5c41;
+  --state-danger-bg: #41353c;
+  --state-danger-line: #6b464d;
+  --grid-label: #949ca8;
+}
+:root[data-theme="phosphor"] {
+  --state-ok-bg: #163720;
+  --state-ok-line: #206235;
+  --state-info-bg: #1e382b;
+  --state-info-line: #33664f;
+  --state-warn-bg: #35331b;
+  --state-warn-line: #6a5a2b;
+  --state-danger-bg: #35231b;
+  --state-danger-line: #6a322b;
+  --grid-label: #57a869;
+}
+
+
+/* ===========================================================================
+ * COMPONENTS -- written once, tokens only, no colour literals below here.
+ * ======================================================================== */
+
+/* --- page ---------------------------------------------------------------- */
+body {
+  font-family: var(--app-font);
+  color: var(--txt-2);
+  background-color: var(--bg-0);
+}
+
+a {
+  color: var(--acc-link);
+}
+
+a:hover,
+a:focus {
+  color: var(--acc-link-hover);
+}
+
+hr {
+  border-top-color: var(--line);
+}
+
+.text-muted {
+  color: var(--txt-3);
+}
+
+.text-info {
+  color: var(--acc-info);
+}
+
+.page-title {
+  color: var(--txt-1);
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  color: var(--txt-1);
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+  color: var(--txt-3);
+}
+
+/* Visible keyboard focus. Bootstrap 3 predates :focus-visible. */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--acc-link);
+  outline-offset: 2px;
+}
+
+/* --- navbar (top bar) and the fixed bottom footer ------------------------ */
+.navbar-inverse {
+  background-color: var(--nav-bg);
+  border-color: var(--nav-line);
+}
+
+.navbar-inverse .navbar-brand {
+  color: var(--nav-brand-txt);
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  color: var(--nav-active-txt);
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-text {
+  color: var(--nav-txt);
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: var(--nav-txt);
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: var(--nav-hover-txt);
+  background-color: var(--nav-hover-bg);
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+  color: var(--nav-active-txt);
+  background-color: var(--nav-active-bg);
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color: var(--nav-active-txt);
+  background-color: var(--nav-active-bg);
+}
+
+.navbar-inverse .navbar-nav > .disabled > a,
+.navbar-inverse .navbar-nav > .disabled > a:hover,
+.navbar-inverse .navbar-nav > .disabled > a:focus {
+  color: var(--txt-4);
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-toggle {
+  border-color: var(--nav-line);
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+  background-color: var(--nav-active-bg);
+}
+
+.navbar-inverse .navbar-toggle .icon-bar {
+  background-color: var(--nav-icon-bar);
+}
+
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+  border-color: var(--nav-line);
+}
+
+.navbar-inverse .navbar-link {
+  color: var(--nav-txt);
+}
+
+.navbar-inverse .navbar-link:hover {
+  color: var(--nav-active-txt);
+}
+
+.navbar-inverse .caret {
+  border-top-color: var(--nav-txt);
+  border-bottom-color: var(--nav-txt);
+}
+
+/* The footer built by AddFooter() in js/rpimonitor.js is a bare
+   .navbar-inverse .navbar-fixed-bottom holding plain <a> links, which stay on
+   --acc-link like every other link on the page. */
+.navbar-fixed-bottom.navbar-inverse {
+  background-color: var(--nav-bg);
+  border-color: var(--nav-line);
+}
+
+/* --- dropdowns (About / Friends / multi-page Status & Statistics) --------- */
+.dropdown-menu {
+  color: var(--dropdown-txt);
+  background-color: var(--dropdown-bg);
+  border-color: var(--dropdown-line);
+}
+
+.dropdown-menu > li > a {
+  color: var(--dropdown-txt);
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  color: var(--dropdown-hover-txt);
+  background-color: var(--dropdown-hover-bg);
+}
+
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  color: var(--nav-active-txt);
+  background-color: var(--acc-link);
+}
+
+.dropdown-menu .divider {
+  background-color: var(--line);
+}
+
+.dropdown-header {
+  color: var(--txt-3);
+}
+
+.navbar-inverse .dropdown-menu {
+  background-color: var(--dropdown-bg);
+  border-color: var(--dropdown-line);
+}
+
+.navbar-inverse .dropdown-menu > li > a {
+  color: var(--dropdown-txt);
+}
+
+.navbar-inverse .dropdown-menu > li > a:hover,
+.navbar-inverse .dropdown-menu > li > a:focus {
+  color: var(--dropdown-hover-txt);
+  background-color: var(--dropdown-hover-bg);
+}
+
+.navbar-inverse .dropdown-menu .divider {
+  background-color: var(--nav-divider);
+}
+
+.navbar-inverse .dropdown-header {
+  color: var(--nav-header-txt);
+}
+
+/* --- list group (the status page strips) --------------------------------- */
+.list-group-item {
+  color: var(--txt-2);
+  background-color: var(--bg-1);
+  border-color: var(--line);
+}
+
+.list-group-item b,
+.list-group-item strong,
+.list-group-item .list-group-item-heading {
+  color: var(--txt-1);
+}
+
+.list-group-item hr {
+  border-top-color: var(--line);
+}
+
+a.list-group-item {
+  color: var(--txt-2);
+}
+
+a.list-group-item:hover,
+a.list-group-item:focus {
+  color: var(--txt-1);
+  background-color: var(--bg-2);
+}
+
+.list-group-item-success {
+  color: var(--state-ok-txt);
+  background-color: var(--state-ok-bg);
+}
+
+.list-group-item-info {
+  color: var(--state-info-txt);
+  background-color: var(--state-info-bg);
+}
+
+.list-group-item-warning {
+  color: var(--state-warn-txt);
+  background-color: var(--state-warn-bg);
+}
+
+.list-group-item-danger {
+  color: var(--state-danger-txt);
+  background-color: var(--state-danger-bg);
+}
+
+.list-group-item-success b,
+.list-group-item-success strong,
+.list-group-item-info b,
+.list-group-item-info strong,
+.list-group-item-warning b,
+.list-group-item-warning strong,
+.list-group-item-danger b,
+.list-group-item-danger strong {
+  color: inherit;
+}
+
+/* --- progress bars ------------------------------------------------------- */
+.progress {
+  background-color: var(--bg-2);
+}
+
+.progress-bar {
+  color: var(--bar-txt);
+  background-color: var(--bar-fill);
+}
+
+.progress-bar-success {
+  color: var(--bar-txt);
+  background-color: var(--acc-ok);
+}
+
+.progress-bar-info {
+  color: var(--bar-txt);
+  background-color: var(--acc-info);
+}
+
+.progress-bar-warning {
+  color: var(--bar-txt);
+  background-color: var(--acc-warn);
+}
+
+.progress-bar-danger {
+  color: var(--bar-txt);
+  background-color: var(--acc-danger);
+}
+
+/* --- well / jumbotron / panel -------------------------------------------- */
+.well {
+  color: var(--txt-2);
+  background-color: var(--well-bg);
+  border-color: var(--well-line);
+}
+
+.well-lg,
+.well-sm {
+  background-color: var(--well-bg);
+  border-color: var(--well-line);
+}
+
+.jumbotron {
+  color: var(--txt-2);
+  background-color: var(--bg-2);
+}
+
+.jumbotron h1,
+.jumbotron .h1 {
+  color: var(--txt-1);
+}
+
+.panel {
+  background-color: var(--panel-bg);
+  border-color: var(--line);
+}
+
+.panel-default {
+  border-color: var(--line);
+}
+
+.panel-heading,
+.panel-default > .panel-heading {
+  color: var(--panel-head-txt);
+  background-color: var(--panel-head-bg);
+  border-color: var(--line);
+}
+
+.panel-body {
+  color: var(--txt-2);
+  background-color: var(--panel-bg);
+}
+
+.panel-footer,
+.panel-default > .panel-footer {
+  color: var(--txt-2);
+  background-color: var(--panel-head-bg);
+  border-color: var(--line);
+}
+
+.panel-title {
+  color: var(--panel-head-txt);
+}
+
+/* --- modals (Options / License / About) ---------------------------------- */
+.modal-content {
+  color: var(--txt-2);
+  background-color: var(--modal-bg);
+  border-color: var(--modal-edge);
+}
+
+.modal-header {
+  border-bottom-color: var(--modal-line);
+}
+
+.modal-header h4,
+.modal-title {
+  color: var(--txt-1);
+}
+
+.modal-body {
+  color: var(--txt-2);
+}
+
+.modal-body hr {
+  border-top-color: var(--line);
+}
+
+.modal-footer {
+  border-top-color: var(--modal-line);
+}
+
+.modal-backdrop,
+.modal-backdrop.in {
+  background-color: var(--backdrop-bg);
+}
+
+.close {
+  color: var(--close-txt);
+  text-shadow: 0 1px 0 var(--close-shadow);
+}
+
+.close:hover,
+.close:focus {
+  color: var(--close-txt);
+}
+
+/* --- popovers (the magnifier info bubbles on the status page) ------------- */
+.popover {
+  color: var(--popover-txt);
+  background-color: var(--popover-bg);
+  border-color: var(--popover-line);
+}
+
+.popover-title {
+  color: var(--txt-1);
+  background-color: var(--popover-title-bg);
+  border-bottom-color: var(--popover-title-line);
+}
+
+.popover-content {
+  color: var(--popover-txt);
+}
+
+.popover-content b,
+.popover-content strong {
+  color: var(--txt-1);
+}
+
+/* Pure-CSS arrow triangles: outer border is the frame, :after is the fill. */
+.popover.top > .arrow {
+  border-top-color: var(--popover-arrow);
+}
+
+.popover.top > .arrow:after {
+  border-top-color: var(--popover-bg);
+}
+
+.popover.right > .arrow {
+  border-right-color: var(--popover-arrow);
+}
+
+.popover.right > .arrow:after {
+  border-right-color: var(--popover-bg);
+}
+
+.popover.bottom > .arrow {
+  border-bottom-color: var(--popover-arrow);
+}
+
+.popover.bottom > .arrow:after {
+  border-bottom-color: var(--popover-bg);
+}
+
+.popover.left > .arrow {
+  border-left-color: var(--popover-arrow);
+}
+
+.popover.left > .arrow:after {
+  border-left-color: var(--popover-bg);
+}
+
+/* --- tooltips ------------------------------------------------------------ */
+.tooltip-inner {
+  color: var(--bg-0);
+  background-color: var(--txt-1);
+}
+
+.tooltip.top .tooltip-arrow,
+.tooltip.top-left .tooltip-arrow,
+.tooltip.top-right .tooltip-arrow {
+  border-top-color: var(--txt-1);
+}
+
+.tooltip.right .tooltip-arrow {
+  border-right-color: var(--txt-1);
+}
+
+.tooltip.bottom .tooltip-arrow,
+.tooltip.bottom-left .tooltip-arrow,
+.tooltip.bottom-right .tooltip-arrow {
+  border-bottom-color: var(--txt-1);
+}
+
+.tooltip.left .tooltip-arrow {
+  border-left-color: var(--txt-1);
+}
+
+/* --- tables (statistics page and the rrdFlot control table) -------------- */
+.table {
+  color: var(--txt-2);
+  background-color: transparent;
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+  border-top-color: var(--table-line);
+}
+
+.table > thead > tr > th {
+  color: var(--txt-1);
+  border-bottom-color: var(--table-line);
+}
+
+.table > tbody + tbody {
+  border-top-color: var(--table-line);
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th,
+.table-striped > tbody > tr:nth-of-type(odd) > td,
+.table-striped > tbody > tr:nth-of-type(odd) > th {
+  background-color: var(--table-stripe-bg);
+}
+
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+  background-color: var(--table-hover-bg);
+}
+
+.table-bordered,
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+  border-color: var(--table-line);
+}
+
+/* --- alerts -------------------------------------------------------------- */
+.alert-success {
+  color: var(--state-ok-txt);
+  background-color: var(--state-ok-bg);
+  border-color: var(--state-ok-line);
+}
+
+.alert-info {
+  color: var(--state-info-txt);
+  background-color: var(--state-info-bg);
+  border-color: var(--state-info-line);
+}
+
+.alert-warning {
+  color: var(--state-warn-txt);
+  background-color: var(--state-warn-bg);
+  border-color: var(--state-warn-line);
+}
+
+/* .alert-error is the Bootstrap 2 spelling, still used by statistics.html */
+.alert-danger,
+.alert-error {
+  color: var(--state-danger-txt);
+  background-color: var(--state-danger-bg);
+  border-color: var(--state-danger-line);
+}
+
+.alert-success hr { border-top-color: var(--state-ok-line); }
+.alert-info hr    { border-top-color: var(--state-info-line); }
+.alert-warning hr { border-top-color: var(--state-warn-line); }
+.alert-danger hr  { border-top-color: var(--state-danger-line); }
+
+.alert .alert-link {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* --- labels and badges (js/rpimonitor.utils.js Label() / Badge()) --------- */
+.label {
+  color: var(--label-txt);
+}
+
+.label-default          { background-color: var(--label-default-bg); }
+.label-primary          { background-color: var(--acc-link); }
+.label-success          { background-color: var(--acc-ok); }
+.label-info             { background-color: var(--acc-info); }
+.label-warning          { background-color: var(--acc-warn); }
+.label-danger           { background-color: var(--acc-danger); }
+
+.badge {
+  color: var(--badge-txt);
+  background-color: var(--badge-bg);
+}
+
+/* Badge() in rpimonitor.utils.js emits `badge alert-<level>`, so the badge
+   picks up the alert colours; force legible text on the tinted ground. */
+.badge.alert-success,
+.badge.alert-info,
+.badge.alert-warning,
+.badge.alert-danger,
+.badge.alert-error {
+  color: inherit;
+}
+
+.badge.alert-success { background-color: var(--state-ok-bg); }
+.badge.alert-info    { background-color: var(--state-info-bg); }
+.badge.alert-warning { background-color: var(--state-warn-bg); }
+.badge.alert-danger,
+.badge.alert-error   { background-color: var(--state-danger-bg); }
+
+.list-group-item.active > .badge,
+.nav-pills > .active > a > .badge {
+  color: var(--acc-link);
+  background-color: var(--bg-1);
+}
+
+/* --- buttons ------------------------------------------------------------- */
+.btn-default {
+  color: var(--btn-default-txt);
+  background-color: var(--btn-default-bg);
+  border-color: var(--btn-default-line);
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  color: var(--btn-default-txt);
+  background-color: var(--btn-default-hover-bg);
+  border-color: var(--btn-default-hover-line);
+}
+
+.btn-primary {
+  color: var(--btn-txt);
+  background-color: var(--acc-link);
+  border-color: var(--btn-primary-line);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: var(--btn-txt);
+  background-color: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-line);
+}
+
+.btn-success {
+  color: var(--btn-txt);
+  background-color: var(--acc-ok);
+  border-color: var(--btn-success-line);
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active,
+.open > .dropdown-toggle.btn-success {
+  color: var(--btn-txt);
+  background-color: var(--btn-success-hover-bg);
+  border-color: var(--btn-success-hover-line);
+}
+
+.btn-link {
+  color: var(--acc-link);
+}
+
+.btn-link:hover,
+.btn-link:focus {
+  color: var(--acc-link-hover);
+}
+
+/* The modal Close buttons carry a bare `btn` with no variant class. */
+.modal-footer .btn:not([class*="btn-"]) {
+  color: var(--btn-default-txt);
+  background-color: var(--btn-default-bg);
+  border: 1px solid var(--btn-default-line);
+}
+
+.modal-footer .btn:not([class*="btn-"]):hover,
+.modal-footer .btn:not([class*="btn-"]):focus {
+  color: var(--btn-default-txt);
+  background-color: var(--btn-default-hover-bg);
+  border-color: var(--btn-default-hover-line);
+}
+
+/* --- forms --------------------------------------------------------------- */
+.form-control {
+  color: var(--input-txt);
+  background-color: var(--input-bg);
+  border-color: var(--input-line);
+}
+
+.form-control::placeholder {
+  color: var(--input-placeholder);
+}
+
+.form-control:focus {
+  border-color: var(--acc-link);
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  color: var(--txt-3);
+  background-color: var(--bg-2);
+}
+
+.input-group-addon {
+  color: var(--input-txt);
+  background-color: var(--bg-2);
+  border-color: var(--input-line);
+}
+
+.control-label,
+label {
+  color: var(--txt-2);
+}
+
+.help-block {
+  color: var(--txt-3);
+}
+
+/* Native controls: the Options-modal graph picker, the rrdFlot resolution and
+   legend selects, and the rrdFlot data-source checkboxes. A native <select>
+   keeps a white popup unless background-color and color are both set. */
+select,
+optgroup,
+option,
+textarea,
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="email"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  color: var(--native-txt);
+  background-color: var(--input-bg);
+  border-color: var(--input-line);
+}
+
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+progress {
+  accent-color: var(--ui-accent);
+}
+
+/* --- images -------------------------------------------------------------- */
+/* Status-strip widget icons in web/img/ are 64px transparent PNGs holding
+   dark line art, so a single invert-style filter carries them across themes.
+   The token is `none` in light, so this rule is safe unconditionally. */
+.list-group-item img,
+.navbar-brand img,
+.DragHandle {
+  filter: var(--icon-filter);
+}
+
+/* TODO: needs a transparent replacement asset. img/version.png is 100% opaque
+   at ~228/255 mean luminance -- a solid light tile. No filter can rescue it
+   (inverting turns it into a solid dark tile with inverted artwork), so we
+   knock it back and let it blend with the surface instead. */
+img[src*="version.png"] {
+  filter: none;
+  opacity: var(--img-opacity);
+  mix-blend-mode: var(--img-blend);
+}
+
+/* The rrd load spinner is a GIF baked on a light ground. */
+#preloader img,
+img[src*="preloader.gif"] {
+  opacity: var(--preloader-opacity);
+}
+
+/* --- misc page furniture ------------------------------------------------- */
+/* The pipe separators between the footer links, emitted by AddFooter() in
+   js/rpimonitor.js. */
+.rpm-sep {
+  color: var(--txt-4);
+}
+
+/* The anchor around the magnifier glyphicon emitted by ShowInfo() in
+   js/rpimonitor.utils.js. It must NOT fall through to the link colour: this
+   glyph reads as body text, not as a link, and light mode has always drawn it
+   in near-black. --txt-2 is #333333 in the light palette, so light stays put. */
+.rpm-info,
+.rpm-info .glyphicon {
+  color: var(--txt-2);
+}
+
+.rpm-info:hover,
+.rpm-info:focus,
+.rpm-info:hover .glyphicon,
+.rpm-info:focus .glyphicon {
+  color: var(--acc-link);
+  text-decoration: none;
+}
+
+.glyphicon {
+  color: inherit;
+}
+
+.caret {
+  border-top-color: currentColor;
+}
+
+.sortable-ghost,
+.sortable-chosen {
+  background-color: var(--bg-2);
+}
+
+/* --- statistics page: flot / rrdFlot chrome ------------------------------ */
+/* rrdFlot builds a bare (class-less) control table around the plot. */
+#mygraph table,
+#mygraph td,
+#mygraph th,
+#infotable,
+#infotable td {
+  color: var(--txt-2);
+  border-color: var(--line);
+}
+
+#mygraph_res_title,
+#mygraph_scale {
+  color: var(--txt-2);
+}
+
+.tickLabel,
+.tickLabels {
+  color: var(--txt-2);
+}
+
+.legendLabel {
+  color: var(--txt-2);
+}
+
+.legendColorBox {
+  border-color: var(--line);
+}
+
+/* --- column rule fallback ------------------------------------------------ */
+.column-fluid {
+  column-rule-color: var(--line);
+}

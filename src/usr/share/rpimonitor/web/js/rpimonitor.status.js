@@ -146,6 +146,17 @@ $(function () {
   /* Populate option dialog*/
   AddOption();
 
+  /* Repaint the gauges immediately when the theme changes instead of waiting
+     for the next refresh tick. UpdateStatus() is the regular refresh entry
+     point: it resets justgageId, rebuilds the rows (which recreates the gauge
+     containers) and drains postProcessCommand, so no timer is rescheduled and
+     no JustGage instance is left behind. */
+  $(document).on('rpm:themechange', function(){
+    if ( strips != undefined ) {
+      UpdateStatus();
+    }
+  });
+
   //Initialize dialog values
   $('#statusautorefresh').attr('checked', statusautorefresh );
 
